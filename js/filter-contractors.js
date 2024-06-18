@@ -1,6 +1,4 @@
-import {
-  TypeOfContractors
-} from './constance.js';
+import {TypeOfContractors} from './constance.js';
 import {
   hideElement,
   clearElementsContainer,
@@ -9,12 +7,8 @@ import {
   changeActiveClass,
   checkIsVerified
 } from './utils.js';
-import {
-  map
-} from './map.js';
-import {
-  createMarkers
-} from './map.js';
+import {map} from './map.js';
+import {createMarkers} from './map.js';
 
 const contractorsTable = document.querySelector('.users-list__table-body');
 const tableRowTemplate = document.querySelector('#user-table-row__template').content.querySelector('.users-list__table-row');
@@ -27,25 +21,18 @@ const buyButton = document.querySelector('#btn-buy');
 export const arrOfSellers = [];
 export const arrOfBuyers = [];
 
-const PROBE = [];
-
 // checkedContractorsButton.addEventListener('click',oncheckedContractorsButton);
 const getArrayOfContractors = (arrOfAllContractors) => {
-  console.log(arrOfAllContractors)
+  //console.log(arrOfAllContractors)
   arrOfAllContractors.forEach((contractor) => {
     if (contractor.status === TypeOfContractors.SELLER) {
       arrOfSellers.push(contractor);
     } else {
       arrOfBuyers.push(contractor);
     }
-    if (contractor.isVerified) {
-      PROBE.push(contractor);
-    }
   });
 };
 
-
-/** */
 const fillContractorData = (element, contractor) => {
   const {
     userName,
@@ -62,6 +49,7 @@ const fillContractorData = (element, contractor) => {
   if (isVerified) {
     showElement(verificationMark);
   }
+
   contractorsName.textContent = userName;
   contractorsCurrency.textContent = balance.currency;
   contractorsExchangeRate.textContent = exchangeRate;
@@ -81,9 +69,7 @@ export const renderSellers = () => {
 
     const row = tableRowTemplate.cloneNode(true);
     row.dataset.rowId = id;
-    //const
-    // const linkElement = cardElement.querySelector('.picture');
-    // linkElement.dataset.pictureId = id;
+
     const contractorsCashLimit = row.querySelector('#cash-limit');
     const paySystemsContainer = row.querySelector('#pay-system');
 
@@ -142,8 +128,8 @@ const oncheckedContractorsButton = () => {
 
 checkedContractorsButton.addEventListener('change', oncheckedContractorsButton);
 
-console.log(arrOfSellers)
-console.log(arrOfBuyers)
+// console.log(arrOfSellers)
+// console.log(arrOfBuyers)
 
 sellButton.addEventListener('click', () => {
 
@@ -157,10 +143,7 @@ buyButton.addEventListener('click', () => {
   clearElementsContainer(contractorsTable);
   renderSellers();
   changeActiveClass(sellButton, buyButton);
-
 });
 
 
-export {
-  getArrayOfContractors
-}
+export {getArrayOfContractors};

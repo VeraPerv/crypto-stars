@@ -5,8 +5,7 @@ import {arrOfSellers,arrOfBuyers} from './filter-contractors.js';
 console.log(currentUser)
 const modalTable = document.querySelector('.users-list__table-body');
 
-// const modalTableButton = document.querySelector('.users-list__table-btn');
-const modalTableButtonCell = document.querySelector('.users-list__table-cell')
+
 const body = document.querySelector('body');
 
 
@@ -24,8 +23,6 @@ const modalBuyCloseBtn = modalBuy.querySelector('.modal__close-btn');
 const modalSellOverlay = modalSell.querySelector('.modal__overlay');
 const modalBuyOverlay = modalBuy.querySelector('.modal__overlay');
 
-//
-
 const modalSellName = modalSell.querySelector('#modal-sell-name');
 const modalBuyName = modalBuy.querySelector('#modal-buy-name');
 const modalSellExchangeRate = modalSell.querySelector('#transaction-sell-exchange');
@@ -35,13 +32,39 @@ const modalSellLimit = modalSell.querySelector('#transaction-sell-limit');
 const modalBuyLimit = modalBuy.querySelector('#transaction-buy-limit');
 const modalSellIcon = modalSell.querySelector('#transaction-sell-icon');
 const modalBuyIcon = modalBuy.querySelector('#transaction-buy-icon');
-const sellIdHiddenInput = modalBuy.querySelector('#contractor-id');
+
+const buyIdHiddenInput = modalBuy.querySelector('#contractor-id');
+const sellIdHiddenInput = modalSell.querySelector('#contractor-sell-id');
+console.log(sellIdHiddenInput)
+
+// buyExchangeRateHiddenInput.value = exchangeRate;
+// buySendingCurrencyHiddenInput.value = Currency.RUBLE;
+// buyReceivingCurrencyHiddenInput.value = Currency.KEKS;
+
 const buyPaymentInput = modalBuy.querySelector('#buy-payment');
 const buyReceivingInput = modalBuy.querySelector('#buy-receiving');
-const sellExchangeRateHiddenInput = modalBuy.querySelector('#exchange-rate');
-const sellSendingCurrencyHiddenInput = modalBuy.querySelector('#sending-currency');
-const sellReceivingCurrencyHiddenInput = modalBuy.querySelector('#receiving-currency');
+
+const sellPaymentInput = modalSell.querySelector('#sell-payment');
+const sellReceivingInput = modalSell.querySelector('#sell-receiving');
+
+console.log(sellPaymentInput)
+console.log(sellReceivingInput)
+
+
+const buyExchangeRateHiddenInput = modalBuy.querySelector('#exchange-rate');
+const sellExchangeRateHiddenInput = modalSell.querySelector('#exchange-rate-sell');
+console.log(sellExchangeRateHiddenInput)
+
+const buySendingCurrencyHiddenInput = modalBuy.querySelector('#sending-currency');
+
+
+const sellSendingCurrencyHiddenInput = modalSell.querySelector('#sending-sell-currency');
+console.log(sellSendingCurrencyHiddenInput)
+const buyReceivingCurrencyHiddenInput = modalBuy.querySelector('#receiving-currency');
+const sellReceivingCurrencyHiddenInput = modalSell.querySelector('#receiving-sell-currency');
+
 console.log(sellReceivingCurrencyHiddenInput)
+
 
 const modalBuyBankCard = modalBuy.querySelector('#modal-buy-bank-card');
 const modalSellBankCard = modalSell.querySelector('#modal-sell-bank-card');
@@ -51,26 +74,28 @@ const modalBuyCryptoWallet = modalBuy.querySelector('#modal-buy-crypto-wallet');
 console.log(modalBuyCryptoWallet)
 
 const modalSellSelect = modalSell.querySelector('#modal-sell-select');
-console.log(modalSellSelect)
 
 const Currency = {
   KEKS: 'KEKS',
   RUBLE: 'RUB',
 };
 
-const currentPayMethods = []
+const currentPayMethods = [];
 const currentPayMethodsSellModal = [];
+
+const selectOptionsArr = [...modalBuySelect.options];
+const selectOptionModalSellArr = [...modalSellSelect.options];
 
 
 const onModalBuySelectChange = (evt) => {
   if(evt.target.value !== 'Cash in person') {
-
     const isNecessaryObj = currentPayMethods.find((payObj) => payObj.provider === evt.target.value);
     modalBuyBankCard.value = isNecessaryObj.accountNumber;
   } else {
     modalBuyBankCard.value = '';
   }
 };
+
 const onModalSellSelectChange = (evt) => {
   if(evt.target.value !== 'Cash in person') {
     const isNecessaryObj = currentPayMethodsSellModal.find((payObj) => payObj.provider === evt.target.value);
@@ -83,10 +108,6 @@ const onModalSellSelectChange = (evt) => {
 modalBuySelect.addEventListener('change',onModalBuySelectChange);
 modalSellSelect.addEventListener('change',onModalSellSelectChange);
 
-const selectOptionsArr = [...modalBuySelect.options];
-const selectOptionModalSellArr = [...modalSellSelect.options];
-
-
 const fillSelectOptions = (arrOfOptions,arrOfMethods) => {
   currentPayMethods.length = 0;
   currentPayMethods.push(...arrOfMethods);
@@ -98,16 +119,24 @@ const fillSelectOptions = (arrOfOptions,arrOfMethods) => {
   });
 };
 
-
 const fillcryptoWallet = (datum,inputRow) => {
   inputRow.value = datum.wallet.address;
-}
+};
+
+const currentDatumBuy = [];
+
+const getCurrentDatum = (datum) => {
+  currentDatumBuy.length = 0;
+  currentDatumBuy.push(datum);
+};
 
 const fillSellModal = (evt) => {
   const currentRow = evt.target.closest('.users-list__table-row');
   const currentDatum = arrOfSellers.find(({id}) => id === currentRow.dataset.rowId);
-  console.log(currentDatum)
-  const {paymentMethods,exchangeRate,balance} = currentDatum;
+  getCurrentDatum(currentDatum);
+  //console.log(currentDatum)
+  const {paymentMethods,exchangeRate,id:currentId,userName,minAmount,balance,isVerified} = currentDatum;
+
     //console.log(currentDatum)
   // console.log(paymentMethods)
   // console.log(currentRow)
@@ -120,22 +149,20 @@ const fillSellModal = (evt) => {
   fillcryptoWallet(currentUser[0],modalBuyCryptoWallet)
 
   hideElement(modalBuyIcon);
-  modalBuyName.textContent = currentDatum.userName;
-  modalBuyExchangeRate.textContent = `${currentDatum.exchangeRate} ₽`;
-  //console.log(parseFloat(modalBuyExchangeRate.textContent))
-  modalBuyLimit.textContent = `${currentDatum.minAmount} ₽ - ${Math.round(currentDatum.exchangeRate * currentDatum.balance.amount)} ₽`;
-  if(currentDatum.isVerified) {
+
+  modalBuyName.textContent = userName;
+  modalBuyExchangeRate.textContent = `${exchangeRate} ₽`;
+  modalBuyLimit.textContent = `${minAmount} ₽ - ${Math.round(exchangeRate * balance.amount)} ₽`;
+  if(isVerified) {
     showElement(modalBuyIcon);
   }
+  buyIdHiddenInput.value = currentId;
+  buyExchangeRateHiddenInput.value = exchangeRate;
+  buySendingCurrencyHiddenInput.value = Currency.RUBLE;
+  buyReceivingCurrencyHiddenInput.value = Currency.KEKS;
+};
 
-  sellIdHiddenInput.value = currentDatum.id;
-  sellExchangeRateHiddenInput.value = exchangeRate;
-
-  sellSendingCurrencyHiddenInput.value = Currency.RUBLE;
-  sellReceivingCurrencyHiddenInput.value = Currency.KEKS;
-
-}
-
+//console.log(currentDatumBuy)
 
 const fillSelectOptionsSellModal = (arrOfOptions,arrOfMethods) => {
   currentPayMethodsSellModal.push(...arrOfMethods);
@@ -153,10 +180,10 @@ const modalSellCryptoWallet = modalSell.querySelector('#modal-sell-crypto-wallet
 const fillBuyModal = (evt) => {
   const currentRow = evt.target.closest('.users-list__table-row');
   const currentDatum = arrOfBuyers.find(({id}) => id === currentRow.dataset.rowId);
-  const {wallet} = currentDatum;
-  console.log(currentDatum)
-  console.log(wallet)
-  console.log(currentUser[0])
+  const {wallet,id:currentId,exchangeRate} = currentDatum;
+  // console.log(currentDatum)
+  // console.log(wallet)
+  // console.log(currentUser[0])
   // console.log(currentRow)
   hideElement(modalSellIcon)
   modalSellName.textContent = currentDatum.userName;
@@ -165,10 +192,16 @@ const fillBuyModal = (evt) => {
   if(currentDatum.isVerified) {
     showElement(modalSellIcon);
   }
-  console.log(currentUser[0].paymentMethods)
+
   fillSelectOptionsSellModal(selectOptionModalSellArr,currentUser[0].paymentMethods)
   modalSellCryptoWallet.value = wallet.address;
   console.log(currentUser[0])
+
+  sellIdHiddenInput.value = currentId;
+  sellExchangeRateHiddenInput.value = exchangeRate;
+  sellSendingCurrencyHiddenInput.value = Currency.KEKS;
+  sellReceivingCurrencyHiddenInput.value = Currency.RUBLE;
+
 }
 
 //console.log(modalBuyExchangeRate.textContent)
@@ -185,8 +218,6 @@ const renderModal = (evt) => {
     //здесь заполняю модальное продажа
   }
 
-   /**У НЕЕ - ЗДЕСЬ ЗАПОЛНЯЮТСЯ SELL КАРТА БАЙ КАРТА В ЗАВИСИМОСТИ ОТ КНОПКИ */
-    /** */
 }
 
 const openModal = (evt) => {
@@ -208,14 +239,31 @@ const onModalTableClick = (evt) => {
 const modalBuyChangeAllBtn = modalBuy.querySelector('#buy-change-all-btn');
 const onBuyPaymentChange = () => {
   // buyReceiving.value = (buyPayment.value / modalBuyExchangeRate.textContent);
-
   buyReceivingInput.value = buyPaymentInput.value / parseFloat(modalBuyExchangeRate.textContent);
-
 };
 
 const onReceivingChange = () => {
   buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
 };
+
+const onSellPaymentChange = () => {
+  sellReceivingInput.value = sellPaymentInput.value * parseFloat(modalSellExchangeRate.textContent);
+};
+
+const onSellReceivingChange = () => {
+  sellPaymentInput.value = sellReceivingInput.value / parseFloat(modalSellExchangeRate.textContent);
+};
+
+sellPaymentInput.addEventListener('input',onSellPaymentChange);
+sellReceivingInput.addEventListener('input',onSellReceivingChange);
+
+
+console.log(currentDatumBuy[0])
+//  const validateBuyPayment = (currentDat,currentUs) => (currentDat.balances.amount / currentDat.exchangeRate) <= currentUs.balances.amount;
+
+
+// pristine.addValidator(modalBuyForm.querySelector('#buy-payment'),/*validateBuyPayment,'У покупател недостаточно средств'*/);
+
 
 buyPaymentInput.addEventListener('input', onBuyPaymentChange);
 buyReceivingInput.addEventListener('input',onReceivingChange);
@@ -229,6 +277,8 @@ const onModalBuyChangeAllBtnClick = () => {
   // pristineBuyForm.pristine.validate(paymentElement);
 };
 modalBuyChangeAllBtn.addEventListener('click', onModalBuyChangeAllBtnClick);
+
+export {currentDatumBuy}
 
 // modalTable.addEventListener('click', (evt) => {
 //  // evt.preventDefault()

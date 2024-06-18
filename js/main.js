@@ -1,11 +1,10 @@
 import {getDataOfContractors,getDataOfUser} from './api.js';
 import {getArrayOfContractors,renderSellers} from './filter-contractors.js';
-//import './user-profile.js';
-import {TypeOfContractors} from './constance.js';
 import {fillUserDatum} from './user-profile.js';
-//import './map.js';
+
 import './modal.js';
-import './validation.js';
+import './modal-buy-validation.js';
+import './modal-sell-validation.js';
 
 
 getDataOfContractors()

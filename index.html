@@ -336,8 +336,9 @@
                                         class="custom-input__unit">₽</span>
                                     <button class="btn btn--textblue custom-input__btn" id="buy-change-all-btn" type="button">обменять все
                                     </button>
-                                    <input type="number" value="" placeholder="0" id="buy-payment" name="sendingAmount"  data-pristine-required-message="Обязательное поле" required>
+                                    <input type="number" value="" placeholder="0" id="buy-payment" name="sendingAmount"  required>
                                 </label>
+                                <!--data-pristine-required-message="Обязательное поле" -->
                                 <!-- Пример стилизации ошибки валидации -->
 
                             </div>
@@ -349,7 +350,8 @@
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Зачисление</span><span
                                         class="custom-input__unit">KEKS</span>
-                                    <input type="number" placeholder="0" name="receivingAmount" id="buy-receiving"  data-pristine-required-message="Обязательное поле" required>
+                                    <input type="number" placeholder="0" name="receivingAmount" id="buy-receiving" required>
+                                    <!--data-pristine-required-message="Обязательное поле"-->
                                 </label>
                             </div>
                         </div>
@@ -439,10 +441,10 @@
                         вообще отправляется скрытыми
                     -->
                     <input type="hidden" name="type" value="SELL">
-                    <input type="hidden" name="contractorId">
-                    <input type="hidden" name="exchangeRate">
-                    <input type="hidden" name="sendingCurrency">
-                    <input type="hidden" name="receivingCurrency">
+                    <input type="hidden" name="contractorId" id="contractor-sell-id" >
+                    <input type="hidden" name="exchangeRate" id="exchange-rate-sell">
+                    <input type="hidden" name="sendingCurrency" id="sending-sell-currency">
+                    <input type="hidden" name="receivingCurrency" id="receiving-sell-currency">
 
                     <div class="transaction-info">
                         <p class="transaction-info__item transaction-info__item--name">
@@ -472,7 +474,7 @@
                                     <span class="custom-input__unit">KEKS</span>
                                     <button class="btn btn--textblue custom-input__btn" type="button">обменять
                                         все</button>
-                                    <input type="number" value="" placeholder="0">
+                                    <input id="sell-payment" type="number" name="sendingAmount" placeholder="0">
                                 </label>
 
                             </div>
@@ -486,7 +488,7 @@
                                         class="custom-input__unit">₽</span>
                                     <button class="btn btn--textblue custom-input__btn" type="button">обменять все
                                     </button>
-                                    <input type="number" value="" placeholder="0">
+                                    <input type="number" id="sell-receiving" value="" placeholder="0" name="receivingAmount">
                                 </label>
                             </div>
                         </div>
@@ -506,7 +508,7 @@
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select id="modal-sell-select">
+                                <select id="modal-sell-select" name="paymentMethod">
                                   <option selected disabled>Выберите платёжную систему</option>
                                   <option value="Sberbank">Sberbank</option>
                                   <option value="QIWI">QIWI</option>
@@ -526,7 +528,7 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Платёжный пароль</span>
-                                    <input type="password" placeholder="Введите пароль">
+                                    <input type="password" name="paymentPassword" placeholder="Введите пароль" value="180712" >
                                 </label>
                             </div>
                         </div>

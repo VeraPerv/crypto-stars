@@ -5,7 +5,6 @@ const listButton = document.querySelector('#btn-list');
 const mapButton = document.querySelector('#btn-map');
 const listOfContractors = document.querySelector('.users-list');
 const mapContainer = document.querySelector('#map-container');
-const mapElement = document.querySelector('#map');//сюда доб карту
 const baloonTemplate = document.querySelector('#map-baloon__template').content.querySelector('.user-card');
 
 const checkedContractorsButton = document.querySelector('#checked-users');
@@ -44,9 +43,6 @@ setTimeout(() => {
 }, 2000);
 
 
-/**(function() {
-  alert("Круглые скобки вокруг всего выражения");
-}()); */
 L.tileLayer(TILE_LAYER, {
   attribution: COPYRIGHT
 }).addTo(map);
@@ -67,9 +63,6 @@ const verifiedIconsConfig = {
   anchorY: 36,
 }
 
-//const marker = L.marker(START_COORDINATE);
-//marker.addTo(map);// не требуется добавления маркера по центру
-/** */
 const pinIcons = L.icon({
   iconUrl: iconConfig.url,
   iconSize: [iconConfig.width, iconConfig.height],
@@ -132,23 +125,18 @@ const createMarker = (datum) => {
 };
 
 const createMarkers = (arrOfAllSellers) => {
- 
   const filteredArrOfCashHavers = arrOfAllSellers.filter((seller) => seller.coords);
-
   const filterVerifiedCashHavers = filteredArrOfCashHavers.filter((seller) => seller.isVerified);
 
   if(checkedContractorsButton.checked) {
-
     markerGroup.clearLayers();
     filterVerifiedCashHavers.forEach((datum) => {
       createMarker(datum);
-      console.log(datum)
-
+      //console.log(datum)
     });
   } else {
     filteredArrOfCashHavers.forEach((datum) => {
       createMarker(datum);
-
     });
   }
 
