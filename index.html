@@ -336,7 +336,7 @@
                                         class="custom-input__unit">₽</span>
                                     <button class="btn btn--textblue custom-input__btn" id="buy-change-all-btn" type="button">обменять все
                                     </button>
-                                    <input type="number" data-pristine-required-message="Обязательное поле" placeholder="0" id="buy-payment" name="sendingAmount"  required>
+                                    <input type="number" value="" data-pristine-required-message="Обязательное поле" placeholder="0" id="buy-payment" name="sendingAmount"  required>
                                 </label>
                                 <!--data-pristine-required-message="Обязательное поле" -->
                                 <!-- Пример стилизации ошибки валидации -->
@@ -350,7 +350,7 @@
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Зачисление</span><span
                                         class="custom-input__unit">KEKS</span>
-                                    <input type="number" placeholder="0" name="receivingAmount" id="buy-receiving" data-pristine-required-message="Обязательное поле" required>
+                                    <input type="number" placeholder="0" name="receivingAmount" value="" id="buy-receiving" data-pristine-required-message="Обязательное поле" required>
                                     <!--data-pristine-required-message="Обязательное поле"-->
                                 </label>
                             </div>
@@ -358,13 +358,13 @@
                     </div>
                     <div class="modal__container">
                         <div class="modal__select-wrapper">
-                            <div class="select"><span>Плaтёжная система</span>
+                            <div class="select custom-input"><span>Плaтёжная система</span>
                                 <!--
                                     При отрисовке в списке платёжных систем нужно отразить только те,
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select id="modal-buy-select" name="paymentMethod">
+                                <select id="modal-buy-select" name="paymentMethod" data-pristine-required-message="Обязательное поле">
                                     <option selected disabled>Выберите платёжную систему</option>
                                     <option value="Sberbank">Sberbank</option>
                                     <option value="QIWI">QIWI</option>
@@ -391,7 +391,7 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Платёжный пароль</span>
-                                    <input type="password" value="180712" name="paymentPassword" placeholder="Введите пароль" id="buy-password">
+                                    <input type="password" value="12345" name="paymentPassword" placeholder="Введите пароль" id="buy-password">
                                 </label>
                             </div>
                         </div>
@@ -502,13 +502,13 @@
                             </div>
                         </div>
                         <div class="modal__select-wrapper">
-                            <div class="select"><span>Плaтёжная система</span>
+                            <div class="select sell-select custom-input"><span>Плaтёжная система</span>
                                 <!--
                                     При отрисовке в списке платёжных систем нужно отразить только те,
                                     которые есть у пользователя. Способ - удалить из разметки или добавить disable-атрибут
                                     остаётся на ваше усмотрение. Первый пункт, с предложением выбора, должен быть всегда
                                 -->
-                                <select id="modal-sell-select" name="paymentMethod">
+                                <select id="modal-sell-select" name="paymentMethod" data-pristine-required-message="Обязательное поле">
                                   <option selected disabled>Выберите платёжную систему</option>
                                   <option value="Sberbank">Sberbank</option>
                                   <option value="QIWI">QIWI</option>
@@ -528,7 +528,7 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Платёжный пароль</span>
-                                    <input type="password" name="paymentPassword" placeholder="Введите пароль" value="180712" id="sell-password">
+                                    <input type="password" name="paymentPassword" placeholder="Введите пароль" value="12345" id="sell-password">
                                 </label>
                             </div>
                         </div>

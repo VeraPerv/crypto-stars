@@ -19,9 +19,4 @@ getDataOfUser()
     fillUserDatum(user);
 })
 
-// getDataOfContractors()
-//   .then((allContractors) => {
-//   console.log(allContractors);
-// })
-
 console.log(L)

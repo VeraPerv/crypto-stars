@@ -21,4 +21,10 @@ export const TypeOfContractors = {
   SELLER: 'seller'
 };
 
+export const errorMessage = {
+  KEKS: 'Не менее одного кекса',
+  PASSWORD: 'Неверный пароль',
+  PAYCARD: 'Выберите способ оплаты'
+};
+
 export const PASSWORD = '180712';

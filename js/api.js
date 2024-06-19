@@ -16,9 +16,9 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       throw new Error(errorText);
     });
 
-
 const getDataOfContractors = () => load(Route.GET_DATA_CONTRACTORS, ErrorText.GET_DATA);
 const getDataOfUser = () => load(Route.GET_DATA_USERS, ErrorText.GET_DATA);
 
-
+export const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
+//,unBlockSubmitBtn
 export {getDataOfContractors,getDataOfUser};

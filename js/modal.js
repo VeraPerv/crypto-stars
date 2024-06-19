@@ -3,6 +3,7 @@ import{currentUser} from './user-profile.js';
 
 import {arrOfSellers,arrOfBuyers} from './filter-contractors.js';
 import{onBuyPaymentChange,onReceivingChange} from './modal-buy-validation.js';
+import{onSellPaymentChange,onSellReceivingChange} from './modal-sell-validation.js';
 console.log(currentUser)
 const modalTable = document.querySelector('.users-list__table-body');
 
@@ -15,6 +16,7 @@ const buyButton = document.querySelector('#btn-buy');
 const modalSell = document.querySelector('.modal--sell');
 const modalBuy = document.querySelector('.modal--buy');
 
+
 const userFiatBalance = document.querySelector('#user-fiat-balance');
 
 const modalSellCloseBtn = modalSell.querySelector('.modal__close-btn');
@@ -23,6 +25,14 @@ const modalBuyCloseBtn = modalBuy.querySelector('.modal__close-btn');
 
 const modalSellOverlay = modalSell.querySelector('.modal__overlay');
 const modalBuyOverlay = modalBuy.querySelector('.modal__overlay');
+
+const modalValidationMessageError = modalBuy.querySelector('.modal__validation-message--error');
+
+const modalValidationMessageSuccess = modalBuy.querySelector('.modal__validation-message--success');
+
+const modalValidationSellMessageError = modalSell.querySelector('.modal__validation-message--error');
+
+const modalValidationSellMessageSuccess = modalSell.querySelector('.modal__validation-message--success');
 
 const modalSellName = modalSell.querySelector('#modal-sell-name');
 const modalBuyName = modalBuy.querySelector('#modal-buy-name');
@@ -89,6 +99,9 @@ const selectOptionModalSellArr = [...modalSellSelect.options];
 
 
 const onModalBuySelectChange = (evt) => {
+
+  hideElement(modalValidationMessageSuccess);
+  hideElement(modalValidationMessageError);
   if(evt.target.value !== 'Cash in person') {
     const isNecessaryObj = currentPayMethods.find((payObj) => payObj.provider === evt.target.value);
     modalBuyBankCard.value = isNecessaryObj.accountNumber;
@@ -98,6 +111,10 @@ const onModalBuySelectChange = (evt) => {
 };
 
 const onModalSellSelectChange = (evt) => {
+
+  hideElement(modalValidationSellMessageError);
+  hideElement(modalValidationSellMessageSuccess);
+
   if(evt.target.value !== 'Cash in person') {
     const isNecessaryObj = currentPayMethodsSellModal.find((payObj) => payObj.provider === evt.target.value);
     modalSellBankCard.value = isNecessaryObj.accountNumber;
@@ -249,13 +266,13 @@ const modalBuyChangeAllBtn = modalBuy.querySelector('#buy-change-all-btn');
 //   buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
 // };
 
-const onSellPaymentChange = () => {
-  sellReceivingInput.value = sellPaymentInput.value * parseFloat(modalSellExchangeRate.textContent);
-};
+// const onSellPaymentChange = () => {
+//   sellReceivingInput.value = sellPaymentInput.value * parseFloat(modalSellExchangeRate.textContent);
+// };
 
-const onSellReceivingChange = () => {
-  sellPaymentInput.value = sellReceivingInput.value / parseFloat(modalSellExchangeRate.textContent);
-};
+// const onSellReceivingChange = () => {
+//   sellPaymentInput.value = sellReceivingInput.value / parseFloat(modalSellExchangeRate.textContent);
+// };
 
 sellPaymentInput.addEventListener('input',onSellPaymentChange);
 sellReceivingInput.addEventListener('input',onSellReceivingChange);
