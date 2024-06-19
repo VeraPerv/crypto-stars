@@ -336,7 +336,7 @@
                                         class="custom-input__unit">₽</span>
                                     <button class="btn btn--textblue custom-input__btn" id="buy-change-all-btn" type="button">обменять все
                                     </button>
-                                    <input type="number" value="" placeholder="0" id="buy-payment" name="sendingAmount"  required>
+                                    <input type="number" data-pristine-required-message="Обязательное поле" placeholder="0" id="buy-payment" name="sendingAmount"  required>
                                 </label>
                                 <!--data-pristine-required-message="Обязательное поле" -->
                                 <!-- Пример стилизации ошибки валидации -->
@@ -350,7 +350,7 @@
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Зачисление</span><span
                                         class="custom-input__unit">KEKS</span>
-                                    <input type="number" placeholder="0" name="receivingAmount" id="buy-receiving" required>
+                                    <input type="number" placeholder="0" name="receivingAmount" id="buy-receiving" data-pristine-required-message="Обязательное поле" required>
                                     <!--data-pristine-required-message="Обязательное поле"-->
                                 </label>
                             </div>
@@ -391,7 +391,7 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Платёжный пароль</span>
-                                    <input type="password" value="180712" name="paymentPassword" placeholder="Введите пароль">
+                                    <input type="password" value="180712" name="paymentPassword" placeholder="Введите пароль" id="buy-password">
                                 </label>
                             </div>
                         </div>
@@ -528,7 +528,7 @@
                         <div class="modal__input-wrapper modal__input-wrapper--decorated">
                             <div class="custom-input">
                                 <label><span class="custom-input__label">Платёжный пароль</span>
-                                    <input type="password" name="paymentPassword" placeholder="Введите пароль" value="180712" >
+                                    <input type="password" name="paymentPassword" placeholder="Введите пароль" value="180712" id="sell-password">
                                 </label>
                             </div>
                         </div>

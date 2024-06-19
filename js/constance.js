@@ -20,3 +20,5 @@ export const TypeOfContractors = {
   BUYER: 'buyer',
   SELLER: 'seller'
 };
+
+export const PASSWORD = '180712';

@@ -2,6 +2,7 @@ import {hideElement, showElement, isEscapeKey} from './utils.js';
 import{currentUser} from './user-profile.js';
 
 import {arrOfSellers,arrOfBuyers} from './filter-contractors.js';
+import{onBuyPaymentChange,onReceivingChange} from './modal-buy-validation.js';
 console.log(currentUser)
 const modalTable = document.querySelector('.users-list__table-body');
 
@@ -123,17 +124,20 @@ const fillcryptoWallet = (datum,inputRow) => {
   inputRow.value = datum.wallet.address;
 };
 
-const currentDatumBuy = [];
+const currentDatumOfSeller = [];
+const currentDatumOfBuyer = [];
+console.log()
 
-const getCurrentDatum = (datum) => {
-  currentDatumBuy.length = 0;
-  currentDatumBuy.push(datum);
+const getCurrentDatum = (datum,arr) => {
+  arr.length = 0;
+  arr.push(datum);
+  console.log(datum)
 };
 
 const fillSellModal = (evt) => {
   const currentRow = evt.target.closest('.users-list__table-row');
   const currentDatum = arrOfSellers.find(({id}) => id === currentRow.dataset.rowId);
-  getCurrentDatum(currentDatum);
+  getCurrentDatum(currentDatum,currentDatumOfSeller);
   //console.log(currentDatum)
   const {paymentMethods,exchangeRate,id:currentId,userName,minAmount,balance,isVerified} = currentDatum;
 
@@ -162,8 +166,6 @@ const fillSellModal = (evt) => {
   buyReceivingCurrencyHiddenInput.value = Currency.KEKS;
 };
 
-//console.log(currentDatumBuy)
-
 const fillSelectOptionsSellModal = (arrOfOptions,arrOfMethods) => {
   currentPayMethodsSellModal.push(...arrOfMethods);
   // console.log(currentPayMethodsSellModal)
@@ -180,6 +182,7 @@ const modalSellCryptoWallet = modalSell.querySelector('#modal-sell-crypto-wallet
 const fillBuyModal = (evt) => {
   const currentRow = evt.target.closest('.users-list__table-row');
   const currentDatum = arrOfBuyers.find(({id}) => id === currentRow.dataset.rowId);
+  getCurrentDatum(currentDatum,currentDatumOfBuyer);
   const {wallet,id:currentId,exchangeRate} = currentDatum;
   // console.log(currentDatum)
   // console.log(wallet)
@@ -237,14 +240,14 @@ const onModalTableClick = (evt) => {
 };
 
 const modalBuyChangeAllBtn = modalBuy.querySelector('#buy-change-all-btn');
-const onBuyPaymentChange = () => {
-  // buyReceiving.value = (buyPayment.value / modalBuyExchangeRate.textContent);
-  buyReceivingInput.value = buyPaymentInput.value / parseFloat(modalBuyExchangeRate.textContent);
-};
+// const onBuyPaymentChange = () => {
+//   // buyReceiving.value = (buyPayment.value / modalBuyExchangeRate.textContent);
+//   buyReceivingInput.value = buyPaymentInput.value / parseFloat(modalBuyExchangeRate.textContent);
+// };
 
-const onReceivingChange = () => {
-  buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
-};
+// const onReceivingChange = () => {
+//   buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
+// };
 
 const onSellPaymentChange = () => {
   sellReceivingInput.value = sellPaymentInput.value * parseFloat(modalSellExchangeRate.textContent);
@@ -258,7 +261,8 @@ sellPaymentInput.addEventListener('input',onSellPaymentChange);
 sellReceivingInput.addEventListener('input',onSellReceivingChange);
 
 
-console.log(currentDatumBuy[0])
+console.log(currentDatumOfSeller[0])
+console.log(currentDatumOfBuyer[0])
 //  const validateBuyPayment = (currentDat,currentUs) => (currentDat.balances.amount / currentDat.exchangeRate) <= currentUs.balances.amount;
 
 
@@ -278,7 +282,7 @@ const onModalBuyChangeAllBtnClick = () => {
 };
 modalBuyChangeAllBtn.addEventListener('click', onModalBuyChangeAllBtnClick);
 
-export {currentDatumBuy}
+export {currentDatumOfSeller,currentDatumOfBuyer}
 
 // modalTable.addEventListener('click', (evt) => {
 //  // evt.preventDefault()
