@@ -1,5 +1,6 @@
-import{currentDatumOfBuyer} from './modal.js';
-import{currentUser} from './user-profile.js';
+// import{currentDatumOfBuyer} from './modal.js'; ранее из модал js
+import{currentDatumOfBuyer} from './modal-buy.js';
+import{currentUser,userProfileContainer} from './user-profile.js';
 import{PASSWORD,ErrorText,errorMessage} from './constance.js';
 import{sendData} from './api.js';
 import { hideElement,showElement } from './utils.js';
@@ -13,6 +14,7 @@ export const modalValidationMessageSuccess = modalSellForm.querySelector('.modal
 const modalValidationMessageError = modalSellForm.querySelector('.modal__validation-message--error');
 
 const modalSellSelect = modalSellForm.querySelector('#modal-sell-select');
+
 
 sellPassword.addEventListener('input',() => {
   hideElement(modalValidationMessageError);
@@ -29,12 +31,6 @@ const pristine = new Pristine(modalSellForm, {
   errorTextParent: 'custom-input',
 });
 
-// const errorMessage = {
-//   KEKS: 'Не менее одного кекса',
-//   PASSWORD: 'Неверный пароль',
-//   PAYCARD: 'Выберите способ оплаты'
-// };
-
 const validateSelectPayment = () => {
   if(modalSellSelect.value === 'Выберите платёжную систему') {
     console.log('тута')
@@ -48,7 +44,6 @@ const getErrorSellSelectPaymentMessage = () => {
     return errorMessage.PAYCARD;
   }
 };
-
 
 const validateSellReceiving = () => {
   console.log(currentUser[0])
@@ -88,8 +83,6 @@ export const onSellPaymentChange = () => {
 
   hideElement(modalValidationMessageError);
   hideElement(modalValidationMessageSuccess);
-  // pristine.validate(sellPaymentInput);
-  // pristine.validate(sellReceivingInput);
   pristine.validate();
 };
 
@@ -98,8 +91,6 @@ export const onSellReceivingChange = () => {
 
   hideElement(modalValidationMessageError);
   hideElement(modalValidationMessageSuccess);
-  // pristine.validate(sellPaymentInput);
-  // pristine.validate(sellReceivingInput);
   pristine.validate();
 };
 
@@ -113,8 +104,6 @@ const getErrorSellPassword = () => {
 pristine.addValidator(sellReceivingInput,validateSellReceiving,getErrorSellReceivingMessage);
 pristine.addValidator(sellPaymentInput,validateSellPayment,getErrorSellPaymentMessage);
 pristine.addValidator(sellPassword,validateSellPassword,getErrorSellPassword);
-
-
 pristine.addValidator(modalSellSelect,validateSelectPayment,getErrorSellSelectPaymentMessage);
 
 
@@ -125,7 +114,6 @@ modalSellForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
 
   if (isValid ) {
-
     hideElement(modalValidationMessageError);
     console.log('Можно отправлять');
     //blockSubmitBtn();
@@ -139,6 +127,7 @@ modalSellForm.addEventListener('submit', (evt) => {
     })
     .catch(() => {
       //showErrorMessageForSending();
+      hideElement(userProfileContainer);
       throw new Error(ErrorText.SEND_DATA);
     })
     .finally(() => {
@@ -151,27 +140,3 @@ modalSellForm.addEventListener('submit', (evt) => {
   }
 });
 
-//export const validate = () => pristine.validate();
-
-
-/**Вся форма */
-
-/**функция валидации */
-// const validateSellPayment = () => {
-//   // const isMin = buyReceivingInput .value >= 1;
-//   // const isMax = buyReceivingInput .value <= currentDatumOfSeller[0].balance.amount;
-
-//   // return (isMin && isMax);
-//   //return true;
-// };
-
-// modalSellForm.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-
-//   const isValid = pristine.validate();
-//   if (isValid) {
-//     console.log('Можно отправлять');
-//   } else {
-//     console.log('Форма невалидна');
-//   }
-// });

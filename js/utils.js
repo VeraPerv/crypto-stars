@@ -43,5 +43,17 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {hideElement,clearElementsContainer,createElement,showElement,changeActiveClass, checkIsVarified,isEscapeKey};
 
+/**добавила из старого модала */
+export const getCurrentDatum = (datum,arr) => {
+  arr.length = 0;
+  arr.push(datum);
+  console.log(datum)
+};
+
+/**добавила из старого модала */
+export const Currency = {
+  KEKS: 'KEKS',
+  RUBLE: 'RUB',
+};
 //,checkVerification
 // const changeActiveClass = (element) => element.classList.toggle('is-active');

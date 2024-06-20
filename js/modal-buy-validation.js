@@ -1,4 +1,5 @@
-import{currentDatumOfSeller} from './modal.js';
+// import{currentDatumOfSeller} from './modal.js'; ранее из модал js
+import{currentDatumOfSeller} from './modal-sell.js';
 import{currentUser} from './user-profile.js';
 import{PASSWORD,ErrorText,errorMessage} from './constance.js';
 import {sendData} from './api.js';
@@ -15,10 +16,19 @@ const modalValidationMessageError = modalBuyForm.querySelector('.modal__validati
 
 const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal__validation-message--success');
 
+const userProfileContainer = document.querySelector('.user-profile');
+
+/**Вся форма */
+const pristine = new Pristine(modalBuyForm, {
+  classTo: 'custom-input',
+  errorClass: 'custom-input__error',
+  errorTextParent: 'custom-input',
+});
+
 buyPasswordInput.addEventListener('input',() => {
   hideElement(modalValidationMessageError);
   hideElement(modalValidationMessageSuccess);
-})
+});
 
 
 hideElement(modalValidationMessageError);
@@ -37,13 +47,6 @@ const getErrorSellSelectPaymentMessage = () => {
   }
 };
 
-
-/**Вся форма */
-const pristine = new Pristine(modalBuyForm, {
-  classTo: 'custom-input',
-  errorClass: 'custom-input__error',
-  errorTextParent: 'custom-input',
-});
 
 /**функция валидации */
 const validatePayment = () => {
@@ -89,30 +92,22 @@ const getErrorReceivingMessage = () => {
   }
 };
 
-
-pristine.addValidator(modalBuySelect,validateSelectPayment,getErrorSellSelectPaymentMessage);
-
 /**Добавляем валидатор на конкретное поле */
+pristine.addValidator(modalBuySelect,validateSelectPayment,getErrorSellSelectPaymentMessage);
 pristine.addValidator(buyReceivingInput,validateReceiving,getErrorReceivingMessage);
 pristine.addValidator(buyPaymentInput,validatePayment, getErrorPaymentMessage);
 
 export const onBuyPaymentChange = () => {
   buyReceivingInput.value = buyPaymentInput.value / parseFloat(modalBuyExchangeRate.textContent);
-
   hideElement(modalValidationMessageSuccess);
   hideElement(modalValidationMessageError);
-  // pristine.validate(buyReceivingInput);
-  // pristine.validate(buyReceivingInput);
-  pristine.validate()
+  pristine.validate();
 };
 
 export const onReceivingChange = () => {
   buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
-
   hideElement(modalValidationMessageSuccess);
   hideElement(modalValidationMessageError);
-  // pristine.validate(buyReceivingInput);
-  // pristine.validate(buyReceivingInput);
   pristine.validate();
 };
 
@@ -133,7 +128,6 @@ modalBuyForm.addEventListener('submit', (evt) => {
   hideElement(modalValidationMessageError);
   const isValid = pristine.validate();
   if (isValid) {
-    //hideElement(modalValidationMessageSuccess);
     hideElement(modalValidationMessageError);
     console.log('Можно отправлять');
     //blockSubmitBtn();
@@ -146,29 +140,14 @@ modalBuyForm.addEventListener('submit', (evt) => {
         console.log('бай форм в then отправка')
     })
     .catch(() => {
-      //showErrorMessageForSending();
       throw new Error(ErrorText.SEND_DATA);
     })
     .finally(() => {
       //разблокируем кнопку
     })
-
   } else {
     showElement(modalValidationMessageError);
     hideElement(modalValidationMessageSuccess);
     console.log('Форма невалидна');
   }
 });
-
- // if(!isValidMin) {
-  //   message = `Сумма не должна быть меньше ${currentDatumOfSeller[0].minAmount}`;
-  //   return false;
-  // }
-  // if(isValidMax) {
-  //   message = `Сумма должна быть не больше ${ maxAmount}`;
-  //   return false;
-  // }
-
-  // const pristineBuyForm = {
-  //   pristine: [],
-  // };
