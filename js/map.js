@@ -1,4 +1,6 @@
 import {hideElement,showElement,changeActiveClass,createElement,clearElementsContainer} from './utils.js';
+// import {openBuyModal,fillSellModal} from './modal-sell.js';
+// import {arrOfSellers} from './filter-contractors.js';
 //import {arrOfSellers} from './filter-contractors.js';
 
 const listButton = document.querySelector('#btn-list');
@@ -6,6 +8,9 @@ const mapButton = document.querySelector('#btn-map');
 const listOfContractors = document.querySelector('.users-list');
 const mapContainer = document.querySelector('#map-container');
 const baloonTemplate = document.querySelector('#map-baloon__template').content.querySelector('.user-card');
+
+//const modalBuy = document.querySelector('.modal--buy');
+
 
 const checkedContractorsButton = document.querySelector('#checked-users');
 const sellButton = document.querySelector('#btn-sell');
@@ -31,17 +36,22 @@ const onListMapControls = () => {}
 /**1360*684 */
 
 //showElement(mapContainer);
+// hideElement(mapContainer);
+// showElement(mapContainer);
+
 
 const map = L.map('map-canvas')
   .on('load', () => {
+    showElement(mapContainer);
    // console.log('Карта инициализирована');
   })
   .setView(START_COORDINATE, ZOOM)
+  .invalidateSize(false);
 
-setTimeout(() => {
-  map.invalidateSize(false);
-}, 2000);
 
+if(listButton.classList.contains('is-active')) {
+  hideElement(mapContainer);
+}
 
 L.tileLayer(TILE_LAYER, {
   attribution: COPYRIGHT
@@ -74,14 +84,25 @@ const verifiedIcons = L.icon({
   iconSize: [iconConfig.width, iconConfig.height],
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
+// const selectOptionsArr = [...modalBuySelect.options];
+
+// const fillBaloonModal = (baloonId) => {
+// console.log(baloonId)
+// const currentDatum = arrOfSellers.find(({id}) => id === baloonId);
+// console.log(currentDatum)
+
+//   const {paymentMethods,exchangeRate, id:currentId,userName,minAmount,balance,isVerified} = currentDatum;
+//   fillSelectOptions(selectOptionsArr,paymentMethods);
+// };
 
 export const createBaloon = (datum) => {
   //console.log(datum);
 
   const {isVerified,userName,balance,exchangeRate,minAmount,paymentMethods} = datum;
 
-  const cardElement = baloonTemplate.cloneNode(true);
 
+  const cardElement = baloonTemplate.cloneNode(true);
+  const baloonButton = cardElement.querySelector('.user-card__change-btn');
   const baloonMark = cardElement.querySelector('.user-card__mark');
   const baloonName = cardElement.querySelector('.user-card__name');
   const baloonCurrency = cardElement.querySelector('#user-currency');
@@ -149,17 +170,17 @@ mapButton.addEventListener('click',() => {
   buyButton.classList.add('is-active');
   map.setView(START_COORDINATE, ZOOM);
   changeActiveClass(mapButton,listButton);
-  showElement(mapContainer);
+  //showElement(mapContainer);
 });
 
 listButton.addEventListener('click',() => {
   sellButton.removeAttribute('disabled');
- // hideElement(mapContainer);
+  hideElement(mapContainer);
   //buyButton.classList.remove('is-active');
   showElement(listOfContractors);
   changeActiveClass(mapButton,listButton);
   map.closePopup();
-  hideElement(mapContainer);
+  //hideElement(mapContainer);
 });
 
 export {createMarkers,map};

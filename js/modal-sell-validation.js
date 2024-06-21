@@ -139,4 +139,5 @@ modalSellForm.addEventListener('submit', (evt) => {
     console.log('Можно отправлять');
   }
 });
+export {pristine}
 

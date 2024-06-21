@@ -71,6 +71,7 @@ export const renderSellers = () => {
     row.dataset.rowId = id;
 
     const contractorsCashLimit = row.querySelector('#cash-limit');
+    /**ul где все названия банков в лишках */
     const paySystemsContainer = row.querySelector('#pay-system');
 
     fillContractorData(row, contractor);

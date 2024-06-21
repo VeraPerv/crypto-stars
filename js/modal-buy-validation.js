@@ -12,9 +12,9 @@ const buyPasswordInput = modalBuyForm.querySelector('#buy-password');
 const modalBuyExchangeRate = modalBuyForm.querySelector('#transaction-buy-exchange');
 
 const modalBuySelect = modalBuyForm.querySelector('#modal-buy-select');
-const modalValidationMessageError = modalBuyForm.querySelector('.modal__validation-message--error');
+export const modalValidationMessageError = modalBuyForm.querySelector('.modal__validation-message--error');
 
-const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal__validation-message--success');
+export const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal__validation-message--success');
 
 const userProfileContainer = document.querySelector('.user-profile');
 
@@ -151,3 +151,5 @@ modalBuyForm.addEventListener('submit', (evt) => {
     console.log('Форма невалидна');
   }
 });
+
+export {pristine}

@@ -1567,6 +1567,7 @@ button,
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  column-gap: 15px;
 }
 
 .user-card fieldset {
@@ -1642,6 +1643,10 @@ button,
   align-items: center;
   font-weight: 700;
   margin-bottom: 14px;
+  width: 91px;
+}
+.user-card__user-name.user-card__user-name {
+  width: 91px;
 }
 
 .user-card__user-name svg {

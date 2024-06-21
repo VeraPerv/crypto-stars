@@ -1,7 +1,7 @@
 import {arrOfBuyers} from './filter-contractors.js';
 import {getCurrentDatum,hideElement,showElement,Currency, isEscapeKey } from './utils.js';
 import{currentUser} from './user-profile.js';
-import{onSellPaymentChange,onSellReceivingChange} from './modal-sell-validation.js';
+import{onSellPaymentChange,onSellReceivingChange,pristine} from './modal-sell-validation.js';
 
 
 const body = document.querySelector('body');
@@ -17,10 +17,17 @@ const sellExchangeRateHiddenInput = modalSell.querySelector('#exchange-rate-sell
 
 const sellSendingCurrencyHiddenInput = modalSell.querySelector('#sending-sell-currency');
 const sellReceivingCurrencyHiddenInput = modalSell.querySelector('#receiving-sell-currency');
+const modalSellForm = document.querySelector('.modal-sell');
 
 const modalSellCloseBtn = modalSell.querySelector('.modal__close-btn');
 const modalSellOverlay = modalSell.querySelector('.modal__overlay');
 const modalSellBankCard = modalSell.querySelector('#modal-sell-bank-card');
+
+const sellPaymentInput = modalSell.querySelector('#sell-payment');
+const sellReceivingInput = modalSell.querySelector('#sell-receiving');
+const modalValidationSellMessageError = modalSell.querySelector('.modal__validation-message--error');
+const modalValidationSellMessageSuccess = modalSell.querySelector('.modal__validation-message--success');
+
 const currentDatumOfBuyer = [];
 const currentPayMethodsSellModal = [];
 const selectOptionModalSellArr = [...modalSellSelect.options];
@@ -29,6 +36,10 @@ const onDocumentKeydownForSell = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideElement(modalSell);
+    hideElement(modalValidationSellMessageError);
+    hideElement(modalValidationSellMessageSuccess);
+    modalSellForm.reset();
+    pristine.reset();
   }
 };
 
@@ -38,6 +49,10 @@ const closeSellModal = () => {
   document.removeEventListener('keydown',onDocumentKeydownForSell);
   modalSellOverlay.removeEventListener('click',closeSellModal);
   modalSellCloseBtn.removeEventListener('click',closeSellModal);
+  hideElement(modalValidationSellMessageError);
+  hideElement(modalValidationSellMessageSuccess);
+  modalSellForm.reset();
+  pristine.reset();
 
 };
 
@@ -48,11 +63,6 @@ const openSellModal = () => {
   modalSellOverlay.addEventListener('click',closeSellModal);
   modalSellCloseBtn.addEventListener('click',closeSellModal);
 };
-
-const sellPaymentInput = modalSell.querySelector('#sell-payment');
-const sellReceivingInput = modalSell.querySelector('#sell-receiving');
-const modalValidationSellMessageError = modalSell.querySelector('.modal__validation-message--error');
-const modalValidationSellMessageSuccess = modalSell.querySelector('.modal__validation-message--success');
 
 const onModalSellSelectChange = (evt) => {
 
@@ -70,6 +80,7 @@ const onModalSellSelectChange = (evt) => {
 
 const fillSelectOptionsSellModal = (arrOfOptions,arrOfMethods) => {
   currentPayMethodsSellModal.push(...arrOfMethods);
+
   // console.log(currentPayMethodsSellModal)
   // console.log(arrOfMethods)
   arrOfOptions.forEach((option) => {
