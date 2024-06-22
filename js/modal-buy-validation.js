@@ -18,7 +18,7 @@ export const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal_
 
 const seller = {
   currentSeller:[]
-}
+};
 
 /**Вся форма */
 const pristine = new Pristine(modalBuyForm, {
@@ -53,25 +53,13 @@ const getErrorSellSelectPaymentMessage = () => {
 const validatePayment = () => {
   seller.currentSeller = currentDatumOfSeller[0];
   const {balance,exchangeRate,minAmount} = seller.currentSeller;
-  console.log(seller.currentSeller)
   const maxAmount = balance.amount * exchangeRate;
   const isMin = buyPaymentInput.value >= minAmount;
   const isMax = buyPaymentInput.value <= maxAmount;
   return (isMin && isMax);
 };
-/**const validatePayment = () => {
-  //console.log(currentDatumOfSeller[0]);
-  const currentSeller = currentDatumOfSeller[0];
-  console.log(currentSeller)
-  console.log(currentUser[0]);
-  const maxAmount = currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate;
-  const isMin = buyPaymentInput.value >= currentDatumOfSeller[0].minAmount;
-  const isMax = buyPaymentInput.value <= maxAmount;
-  return (isMin && isMax);
-}; */
 
 const getErrorPaymentMessage = () => {
- // const currentSeller = currentDatumOfSeller[0];
   const {balance,exchangeRate,minAmount} = seller.currentSeller;
   const maxAmount = balance.amount * exchangeRate;
   if (buyPaymentInput.value < minAmount) {
