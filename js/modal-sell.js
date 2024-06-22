@@ -1,5 +1,5 @@
 import {arrOfSellers} from './filter-contractors.js';
-import {getCurrentDatum,Currency,hideElement,showElement,isEscapeKey } from './utils.js';
+import {getCurrentDatum,Currency,hideElement,showElement,isEscapeKey,hideSuccessErrorMessages } from './utils.js';
 import{currentUser} from './user-profile.js';
 import{onBuyPaymentChange,onReceivingChange,pristine} from './modal-buy-validation.js';
 
@@ -20,8 +20,8 @@ const buyReceivingCurrencyHiddenInput = modalBuy.querySelector('#receiving-curre
 const buyPaymentInput = modalBuy.querySelector('#buy-payment');
 const buyReceivingInput = modalBuy.querySelector('#buy-receiving');
 
-const modalValidationMessageSuccess = modalBuy.querySelector('.modal__validation-message--success');
-const modalValidationMessageError = modalBuy.querySelector('.modal__validation-message--error');
+// const modalValidationMessageSuccess = modalBuy.querySelector('.modal__validation-message--success');
+// const modalValidationMessageError = modalBuy.querySelector('.modal__validation-message--error');
 
 
 const modalBuyCloseBtn = modalBuy.querySelector('.modal__close-btn');
@@ -31,7 +31,7 @@ const modalBuyBankCard = modalBuy.querySelector('#modal-buy-bank-card');
 const currentDatumOfSeller = [];
 const currentPayMethods = [];
 /**в массив опций селекта помещаю все опции из разметки */
-const selectOptionsArr = [...modalBuySelect.options];
+//const selectOptionsArr = [...modalBuySelect.options];
 
 
 const onDocumentKeydownForBuy = (evt) => {
@@ -41,22 +41,32 @@ const onDocumentKeydownForBuy = (evt) => {
   }
 };
 
+const resetBuyFormValidation = () => {
+  hideSuccessErrorMessages();
+  // hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  pristine.reset();
+  modalBuyForm.reset();
+};
+
 const closeBuyModal = () => {
-  hideElement(modalBuy);
   body.classList.remove('scroll-lock');
+  hideElement(modalBuy);
   document.removeEventListener('keydown',onDocumentKeydownForBuy);
   modalBuyCloseBtn.removeEventListener('click',closeBuyModal);
   modalBuyOverlay.removeEventListener('click',closeBuyModal);
-  hideElement(modalValidationMessageError);
-  hideElement(modalValidationMessageSuccess);
-  pristine.reset();
-  modalBuyForm.reset();
+
+  resetBuyFormValidation();
+  // hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  // pristine.reset();
+  // modalBuyForm.reset();
    //очищ удал
 };
 
 const openBuyModal = () => {
-  showElement(modalBuy);
   body.classList.add('scroll-lock');
+  showElement(modalBuy);
   document.addEventListener('keydown',onDocumentKeydownForBuy);
   modalBuyOverlay.addEventListener('click',closeBuyModal);
   modalBuyCloseBtn.addEventListener('click',closeBuyModal);
@@ -70,23 +80,21 @@ const fillSelectBuyOptions = (arrOfMethods) => {
 const firstElement = modalBuySelect.children[0];//пл система
   modalBuySelect.textContent = '';
   modalBuySelect.appendChild(firstElement);
-  console.log(modalBuySelect)
-  console.log(arrOfMethods)
 
   for (const method of arrOfMethods) {
-    console.log(method)
     const methodName = method.provider;
-    const methodOption = document.createElement('option');
-    methodOption.textContent = methodName;
-    methodOption.value = methodName;
-    modalBuySelect.appendChild(methodOption);
+    //const methodOption = document.createElement('option');
+    const selectOption = document.createElement('option');
+    selectOption.textContent = methodName;
+    selectOption.value = methodName;
+    modalBuySelect.appendChild(selectOption);
   }
 };
 
 const onModalBuySelectChange = (evt) => {
-
-  hideElement(modalValidationMessageSuccess);
-  hideElement(modalValidationMessageError);
+  hideSuccessErrorMessages();
+  // hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
   if(evt.target.value !== 'Cash in person') {
     console.log(currentPayMethods)
     const isNecessaryObj = currentPayMethods.find((payObj) => payObj.provider === evt.target.value);
@@ -95,28 +103,21 @@ const onModalBuySelectChange = (evt) => {
     modalBuyBankCard.value = '';
   }
 };
-const fillcryptoWallet = (datum,inputRow) => {
-  inputRow.value = datum.wallet.address;
-};
+// const fillcryptoWallet = (datum,inputRow) => {
+//   inputRow.value = datum.wallet.address;
+// };
 const fillSellModal = (evt) => {
   const currentRow = evt.target.closest('.users-list__table-row');
   const currentDatum = arrOfSellers.find(({id}) => id === currentRow.dataset.rowId);
+  const user = currentUser[0];
+  const {wallet} = user;
   getCurrentDatum(currentDatum,currentDatumOfSeller);
   //console.log(currentDatum)
   const {paymentMethods,exchangeRate,id:currentId,userName,minAmount,balance,isVerified} = currentDatum;
-
-    //console.log(currentDatum)
-  // console.log(paymentMethods)
-  // console.log(currentRow)
-  //fillModalBuyBankCard(paymentMethods)
-  console.log(selectOptionsArr)
-  /**массив объектов провайдер: сбербанк */
-  console.log(paymentMethods)
-  //fillSelectOptions(selectOptionsArr,paymentMethods);
   fillSelectBuyOptions(paymentMethods)
-  modalBuyCryptoWallet.value = currentUser[0].wallet.address;
-
-  fillcryptoWallet(currentUser[0],modalBuyCryptoWallet)
+  //modalBuyCryptoWallet.value = currentUser[0].wallet.address;
+  modalBuyCryptoWallet.value = wallet.address;
+  //fillcryptoWallet(currentUser[0],modalBuyCryptoWallet);
 
   hideElement(modalBuyIcon);
 

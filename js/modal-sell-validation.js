@@ -12,7 +12,6 @@ const modalSellExchangeRate = modalSellForm.querySelector('#transaction-sell-exc
 const sellPassword = modalSellForm.querySelector('#sell-password');
 export const modalValidationMessageSuccess = modalSellForm.querySelector('.modal__validation-message--success');
 const modalValidationMessageError = modalSellForm.querySelector('.modal__validation-message--error');
-
 const modalSellSelect = modalSellForm.querySelector('#modal-sell-select');
 
 

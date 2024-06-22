@@ -1,5 +1,5 @@
 import {arrOfBuyers} from './filter-contractors.js';
-import {getCurrentDatum,hideElement,showElement,Currency, isEscapeKey } from './utils.js';
+import {getCurrentDatum,hideElement,showElement,Currency, isEscapeKey,hideSellSuccessErrorMessages } from './utils.js';
 import{currentUser} from './user-profile.js';
 import{onSellPaymentChange,onSellReceivingChange,pristine} from './modal-sell-validation.js';
 
@@ -33,19 +33,19 @@ const currentPayMethodsSellModal = [];
 const selectOptionModalSellArr = [...modalSellSelect.options];
 
 
-const hideSuccessErrorMessages = () => {
-  hideElement(modalValidationSellMessageError);
-  hideElement(modalValidationSellMessageSuccess);
-};
+// const hideSellSuccessErrorMessages = () => {
+//   hideElement(modalValidationSellMessageError);
+//   hideElement(modalValidationSellMessageSuccess);
+// };
 
 
-const resetFormValidation = () => {
+const resetSellFormValidation = () => {
   // hideElement(modalValidationSellMessageError);
   // hideElement(modalValidationSellMessageSuccess);
-  hideSuccessErrorMessages();
+  hideSellSuccessErrorMessages();
   modalSellForm.reset();
   pristine.reset();
-}
+};
 
 const onDocumentKeydownForSell = (evt) => {
   if (isEscapeKey(evt)) {
@@ -56,7 +56,7 @@ const onDocumentKeydownForSell = (evt) => {
     // hideElement(modalValidationSellMessageSuccess);
     // modalSellForm.reset();
     // pristine.reset();
-    resetFormValidation();
+    resetSellFormValidation();
   }
 };
 
@@ -71,7 +71,7 @@ const closeSellModal = () => {
   // hideElement(modalValidationSellMessageSuccess);
   // modalSellForm.reset();
   // pristine.reset();
-  resetFormValidation();
+  resetSellFormValidation();
 };
 
 const openSellModal = () => {
@@ -86,7 +86,7 @@ const onModalSellSelectChange = (evt) => {
 
   // hideElement(modalValidationSellMessageError);
   // hideElement(modalValidationSellMessageSuccess);
-  hideSuccessErrorMessages();
+  hideSellSuccessErrorMessages();
 
   if(evt.target.value !== 'Cash in person') {
     const isNecessaryObj = currentPayMethodsSellModal.find((payObj) => payObj.provider === evt.target.value);

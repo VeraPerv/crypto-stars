@@ -1,3 +1,12 @@
+
+const modalSell = document.querySelector('.modal--sell');
+const modalValidationSellMessageError = modalSell.querySelector('.modal__validation-message--error');
+const modalValidationSellMessageSuccess = modalSell.querySelector('.modal__validation-message--success');
+const modalBuy = document.querySelector('.modal--buy');
+const modalValidationMessageSuccess = modalBuy.querySelector('.modal__validation-message--success');
+const modalValidationMessageError = modalBuy.querySelector('.modal__validation-message--error');
+
+
 const checkedContractorsButton = document.querySelector('#checked-users');
 
 const hideElement = (element) => {
@@ -54,6 +63,17 @@ export const getCurrentDatum = (datum,arr) => {
 export const Currency = {
   KEKS: 'KEKS',
   RUBLE: 'RUB',
+};
+
+export const hideSellSuccessErrorMessages = () => {
+  hideElement(modalValidationSellMessageError);
+  hideElement(modalValidationSellMessageSuccess);
+};
+
+
+export const hideSuccessErrorMessages = () => {
+  hideElement(modalValidationMessageError);
+  hideElement(modalValidationMessageSuccess);
 };
 //,checkVerification
 // const changeActiveClass = (element) => element.classList.toggle('is-active');
