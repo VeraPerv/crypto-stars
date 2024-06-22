@@ -3,7 +3,7 @@ import{currentDatumOfBuyer} from './modal-buy.js';
 import{currentUser,userProfileContainer} from './user-profile.js';
 import{PASSWORD,ErrorText,errorMessage} from './constance.js';
 import{sendData} from './api.js';
-import { hideElement,showElement } from './utils.js';
+import { hideElement,showElement,hideSellSuccessErrorMessages } from './utils.js';
 
 const modalSellForm = document.querySelector('.modal-sell');
 const sellPaymentInput = modalSellForm.querySelector('#sell-payment');
@@ -28,13 +28,15 @@ const pristine = new Pristine(modalSellForm, {
 });
 
 sellPassword.addEventListener('input',() => {
-  hideElement(modalValidationMessageError);
-  hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  hideSellSuccessErrorMessages();
 });
 
-
-hideElement(modalValidationMessageError);
-hideElement(modalValidationMessageSuccess);
+/*где это делаю в модал бай валидейшен??? */
+hideSellSuccessErrorMessages();
+// hideElement(modalValidationMessageError);
+// hideElement(modalValidationMessageSuccess);
 //showElement(modalValidationMessageError);
 
 
@@ -107,17 +109,17 @@ const getErrorSellPaymentMessage = () => {
 };
 export const onSellPaymentChange = () => {
   sellReceivingInput.value = sellPaymentInput.value * parseFloat(modalSellExchangeRate.textContent);
-
-  hideElement(modalValidationMessageError);
-  hideElement(modalValidationMessageSuccess);
+  hideSellSuccessErrorMessages()
+  // hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
   pristine.validate();
 };
 
 export const onSellReceivingChange = () => {
   sellPaymentInput.value = sellReceivingInput.value / parseFloat(modalSellExchangeRate.textContent);
-
-  hideElement(modalValidationMessageError);
-  hideElement(modalValidationMessageSuccess);
+  hideSellSuccessErrorMessages()
+  // hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
   pristine.validate();
 };
 
@@ -136,8 +138,9 @@ pristine.addValidator(modalSellSelect,validateSelectPayment,getErrorSellSelectPa
 
 modalSellForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  hideElement(modalValidationMessageSuccess);
-  hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
+  hideSellSuccessErrorMessages()
   const isValid = pristine.validate();
 
   if (isValid ) {
@@ -163,7 +166,7 @@ modalSellForm.addEventListener('submit', (evt) => {
   } else {
     showElement(modalValidationMessageError);
     hideElement(modalValidationMessageSuccess);
-    console.log('Можно отправлять');
+    console.log('не валид');
   }
 });
 export {pristine}

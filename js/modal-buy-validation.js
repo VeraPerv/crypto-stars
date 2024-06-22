@@ -3,7 +3,7 @@ import{currentDatumOfSeller} from './modal-sell.js';
 import{currentUser} from './user-profile.js';
 import{PASSWORD,ErrorText,errorMessage} from './constance.js';
 import {sendData} from './api.js';
-import { hideElement,showElement } from './utils.js';
+import { hideElement,showElement,hideSuccessErrorMessages } from './utils.js';
 
 const modalBuyForm = document.querySelector('.modal-buy');
 const buyPaymentInput = modalBuyForm.querySelector('#buy-payment');
@@ -28,13 +28,14 @@ const pristine = new Pristine(modalBuyForm, {
 });
 
 buyPasswordInput.addEventListener('input',() => {
-  hideElement(modalValidationMessageError);
-  hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  hideSuccessErrorMessages();
 });
 
-
-hideElement(modalValidationMessageError);
-hideElement(modalValidationMessageSuccess);
+hideSuccessErrorMessages();
+// hideElement(modalValidationMessageError);
+// hideElement(modalValidationMessageSuccess);
 
 const validateSelectPayment = () => {
   if(modalBuySelect.value === 'Выберите платёжную систему') {
@@ -138,15 +139,17 @@ pristine.addValidator(buyPaymentInput,validatePayment, getErrorPaymentMessage);
 
 export const onBuyPaymentChange = () => {
   buyReceivingInput.value = buyPaymentInput.value / parseFloat(modalBuyExchangeRate.textContent);
-  hideElement(modalValidationMessageSuccess);
-  hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
+  hideSuccessErrorMessages();
   pristine.validate();
 };
 
 export const onReceivingChange = () => {
   buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
-  hideElement(modalValidationMessageSuccess);
-  hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
+  hideSuccessErrorMessages();
   pristine.validate();
 };
 
@@ -163,8 +166,9 @@ pristine.addValidator(buyPasswordInput,validateBuyPassword,getErrorBuyPassword);
 /**Слушаем всю форму */
 modalBuyForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  hideElement(modalValidationMessageSuccess);
-  hideElement(modalValidationMessageError);
+  // hideElement(modalValidationMessageSuccess);
+  // hideElement(modalValidationMessageError);
+  hideSuccessErrorMessages()
   const isValid = pristine.validate();
   if (isValid) {
     hideElement(modalValidationMessageError);
