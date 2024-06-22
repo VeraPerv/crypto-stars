@@ -1,16 +1,10 @@
 import {hideElement,showElement,changeActiveClass,createElement,clearElementsContainer} from './utils.js';
-// import {openBuyModal,fillSellModal} from './modal-sell.js';
-// import {arrOfSellers} from './filter-contractors.js';
-//import {arrOfSellers} from './filter-contractors.js';
 
 const listButton = document.querySelector('#btn-list');
 const mapButton = document.querySelector('#btn-map');
 const listOfContractors = document.querySelector('.users-list');
 const mapContainer = document.querySelector('#map-container');
 const baloonTemplate = document.querySelector('#map-baloon__template').content.querySelector('.user-card');
-
-//const modalBuy = document.querySelector('.modal--buy');
-
 
 const checkedContractorsButton = document.querySelector('#checked-users');
 const sellButton = document.querySelector('#btn-sell');
@@ -26,24 +20,9 @@ const ZOOM = 10;
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-
-
-/*ПОДУМАТЬ КАК СОКРАТИТЬ  changeActiveClass(mapButton);
-  changeActiveClass(listButton); А ТАКЖЕ SELLBUTTON BUYBUTTON В FILTER-CONTRACTORS*/
-  /*прописать функцию - обработчик универсальную для кнопок*/
-const onListMapControls = () => {}
-
-/**1360*684 */
-
-//showElement(mapContainer);
-// hideElement(mapContainer);
-// showElement(mapContainer);
-
-
 const map = L.map('map-canvas')
   .on('load', () => {
     showElement(mapContainer);
-   // console.log('Карта инициализирована');
   })
   .setView(START_COORDINATE, ZOOM)
   .invalidateSize(false);
@@ -66,12 +45,12 @@ const iconConfig = {
 };
 
 const verifiedIconsConfig = {
-  url: './img/pin-verified.svg',//img\pin-verified.svg
+  url: './img/pin-verified.svg',
   width: 36,
   height: 46,
   anchorX: 18,
   anchorY: 36,
-}
+};
 
 const pinIcons = L.icon({
   iconUrl: iconConfig.url,
@@ -84,16 +63,6 @@ const verifiedIcons = L.icon({
   iconSize: [iconConfig.width, iconConfig.height],
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
-// const selectOptionsArr = [...modalBuySelect.options];
-
-// const fillBaloonModal = (baloonId) => {
-// console.log(baloonId)
-// const currentDatum = arrOfSellers.find(({id}) => id === baloonId);
-// console.log(currentDatum)
-
-//   const {paymentMethods,exchangeRate, id:currentId,userName,minAmount,balance,isVerified} = currentDatum;
-//   fillSelectOptions(selectOptionsArr,paymentMethods);
-// };
 
 export const createBaloon = (datum) => {
   //console.log(datum);
@@ -153,14 +122,12 @@ const createMarkers = (arrOfAllSellers) => {
     markerGroup.clearLayers();
     filterVerifiedCashHavers.forEach((datum) => {
       createMarker(datum);
-      //console.log(datum)
     });
   } else {
     filteredArrOfCashHavers.forEach((datum) => {
       createMarker(datum);
     });
   }
-
 };
 
 mapButton.addEventListener('click',() => {
@@ -168,9 +135,9 @@ mapButton.addEventListener('click',() => {
   showElement(mapContainer);
   sellButton.setAttribute('disabled','');
   buyButton.classList.add('is-active');
+  sellButton.classList.remove('is-active');
   map.setView(START_COORDINATE, ZOOM);
-  changeActiveClass(mapButton,listButton);
-  //showElement(mapContainer);
+  changeActiveClass(listButton,mapButton);
 });
 
 listButton.addEventListener('click',() => {
@@ -180,7 +147,6 @@ listButton.addEventListener('click',() => {
   showElement(listOfContractors);
   changeActiveClass(mapButton,listButton);
   map.closePopup();
-  //hideElement(mapContainer);
 });
 
 export {createMarkers,map};

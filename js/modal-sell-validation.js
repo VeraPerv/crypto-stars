@@ -33,7 +33,6 @@ const pristine = new Pristine(modalSellForm, {
 
 const validateSelectPayment = () => {
   if(modalSellSelect.value === 'Выберите платёжную систему') {
-    console.log('тута')
     return false;
   }
   return true;

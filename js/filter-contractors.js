@@ -73,20 +73,17 @@ export const renderSellers = () => {
     const contractorsCashLimit = row.querySelector('#cash-limit');
     /**ul где все названия банков в лишках */
     const paySystemsContainer = row.querySelector('#pay-system');
-
     fillContractorData(row, contractor);
-
     contractorsCashLimit.textContent = `${minAmount} ₽ - ${Math.round(exchangeRate * balance.amount)} ₽`;
-
     clearElementsContainer(paySystemsContainer);
     createElement(paySystemsContainer, paymentMethods, 'li', 'users-list__badges-item', 'badge');
-
     fragment.appendChild(row);
     contractorsTable.appendChild(fragment);
 
     if (checkedContractorsButton.checked) {
       checkIsVerified(row, contractor);
     }
+
   });
   createMarkers(arrOfSellers);
 };
@@ -104,7 +101,6 @@ const renderBuyers = () => {
     const contractorsCashLimit = row.querySelector('#cash-limit');
     const paySystemsContainer = row.querySelector('#pay-system');
     clearElementsContainer(paySystemsContainer);
-
     contractorsCashLimit.textContent =
       `${minAmount} - ${balance.amount} ₽`;
     fillContractorData(row, buyer);
@@ -113,6 +109,7 @@ const renderBuyers = () => {
     if (checkedContractorsButton.checked) {
       checkIsVerified(row, buyer);
     }
+
   });
 };
 

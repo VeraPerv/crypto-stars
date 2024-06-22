@@ -16,7 +16,9 @@ export const modalValidationMessageError = modalBuyForm.querySelector('.modal__v
 
 export const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal__validation-message--success');
 
-const userProfileContainer = document.querySelector('.user-profile');
+const seller = {
+  currentSeller:[]
+}
 
 /**Вся форма */
 const pristine = new Pristine(modalBuyForm, {
@@ -47,23 +49,42 @@ const getErrorSellSelectPaymentMessage = () => {
   }
 };
 
-
 /**функция валидации */
 const validatePayment = () => {
-  console.log(currentDatumOfSeller[0]);
-  console.log(currentUser[0]);
-  /*максимальная сумма = amount продавца в кексах* курс продавца*/
-  const maxAmount = currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate;
-  /** Мин сумма = вэлью инпута >= currentSeller.minAmount currentSeller*/
-  const isMin = buyPaymentInput.value >= currentDatumOfSeller[0].minAmount;
-  /** Максимальная сумма = вэлью инпута <= maxAmount*/
+  seller.currentSeller = currentDatumOfSeller[0];
+  const {balance,exchangeRate,minAmount} = seller.currentSeller;
+  console.log(seller.currentSeller)
+  const maxAmount = balance.amount * exchangeRate;
+  const isMin = buyPaymentInput.value >= minAmount;
   const isMax = buyPaymentInput.value <= maxAmount;
-
   return (isMin && isMax);
-  //return true;
 };
+/**const validatePayment = () => {
+  //console.log(currentDatumOfSeller[0]);
+  const currentSeller = currentDatumOfSeller[0];
+  console.log(currentSeller)
+  console.log(currentUser[0]);
+  const maxAmount = currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate;
+  const isMin = buyPaymentInput.value >= currentDatumOfSeller[0].minAmount;
+  const isMax = buyPaymentInput.value <= maxAmount;
+  return (isMin && isMax);
+}; */
 
 const getErrorPaymentMessage = () => {
+ // const currentSeller = currentDatumOfSeller[0];
+  const {balance,exchangeRate,minAmount} = seller.currentSeller;
+  const maxAmount = balance.amount * exchangeRate;
+  if (buyPaymentInput.value < minAmount) {
+    return `Минимальная сумма ${minAmount} ₽`;
+  }
+  if (buyPaymentInput.value > balance.amount * exchangeRate) {
+    return `Максимальная сумма ${(maxAmount).toFixed(2)} ₽`;
+  }
+};
+/**
+const getErrorPaymentMessage = () => {
+  const currentSeller = currentDatumOfSeller[0];
+  const {balance,exchangeRate,minAmount} = currentSeller;
   const maxAmount = currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate;
   if (buyPaymentInput.value < currentDatumOfSeller[0].minAmount) {
     return `Минимальная сумма ${currentDatumOfSeller[0].minAmount} ₽`;
@@ -71,16 +92,45 @@ const getErrorPaymentMessage = () => {
   if (buyPaymentInput.value > currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate) {
     return `Максимальная сумма ${(maxAmount).toFixed(2)} ₽`;
   }
-};
+}; */
 
 const validateReceiving = () => {
+  //const currentSeller = currentDatumOfSeller[0];
+  const {balance} = seller.currentSeller;
+  const isMin = buyReceivingInput .value >= 1;
+  const isMax = buyReceivingInput .value <= balance.amount;
+
+  return (isMin && isMax);
+};
+/**const validateReceiving = () => {
+  const currentSeller = currentDatumOfSeller[0];
+  const {balance} = currentSeller;
   const isMin = buyReceivingInput .value >= 1;
   const isMax = buyReceivingInput .value <= currentDatumOfSeller[0].balance.amount;
 
   return (isMin && isMax);
-};
+}; */
 
 const getErrorReceivingMessage = () => {
+  //const currentSeller = currentDatumOfSeller[0];
+  const {balance:sellerBalance} = seller.currentSeller;
+  const currentUserDatum = currentUser[0];
+  const {balances} = currentUserDatum;
+  const keksBalance = balances.find((balance) => balance.currency === 'KEKS');
+
+  if ( buyReceivingInput.value < 1) {
+    return errorMessage.KEKS;
+  }
+  if ( buyReceivingInput.value > keksBalance.amount) {
+
+    return `Максимальная сумма ${sellerBalance.amount} КЕКС`;
+  }
+};
+
+/**
+const getErrorReceivingMessage = () => {
+  const currentUserDatum = currentUser[0];
+  const {}
   console.log(currentUser[0].balances[1].amount)
   //pristine.reset();
   if ( buyReceivingInput.value < 1) {
@@ -91,6 +141,7 @@ const getErrorReceivingMessage = () => {
     return `Максимальная сумма ${currentDatumOfSeller[0].balance.amount} КЕКС`;
   }
 };
+ */
 
 /**Добавляем валидатор на конкретное поле */
 pristine.addValidator(modalBuySelect,validateSelectPayment,getErrorSellSelectPaymentMessage);
@@ -152,4 +203,4 @@ modalBuyForm.addEventListener('submit', (evt) => {
   }
 });
 
-export {pristine}
+export {pristine};

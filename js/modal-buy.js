@@ -32,33 +32,51 @@ const currentDatumOfBuyer = [];
 const currentPayMethodsSellModal = [];
 const selectOptionModalSellArr = [...modalSellSelect.options];
 
+
+const hideSuccessErrorMessages = () => {
+  hideElement(modalValidationSellMessageError);
+  hideElement(modalValidationSellMessageSuccess);
+};
+
+
+const resetFormValidation = () => {
+  // hideElement(modalValidationSellMessageError);
+  // hideElement(modalValidationSellMessageSuccess);
+  hideSuccessErrorMessages();
+  modalSellForm.reset();
+  pristine.reset();
+}
+
 const onDocumentKeydownForSell = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideElement(modalSell);
-    hideElement(modalValidationSellMessageError);
-    hideElement(modalValidationSellMessageSuccess);
-    modalSellForm.reset();
-    pristine.reset();
+
+    // hideElement(modalValidationSellMessageError);
+    // hideElement(modalValidationSellMessageSuccess);
+    // modalSellForm.reset();
+    // pristine.reset();
+    resetFormValidation();
   }
 };
 
 const closeSellModal = () => {
-  hideElement(modalSell);
   body.classList.remove('scroll-lock');
+  hideElement(modalSell);
   document.removeEventListener('keydown',onDocumentKeydownForSell);
   modalSellOverlay.removeEventListener('click',closeSellModal);
   modalSellCloseBtn.removeEventListener('click',closeSellModal);
-  hideElement(modalValidationSellMessageError);
-  hideElement(modalValidationSellMessageSuccess);
-  modalSellForm.reset();
-  pristine.reset();
 
+  // hideElement(modalValidationSellMessageError);
+  // hideElement(modalValidationSellMessageSuccess);
+  // modalSellForm.reset();
+  // pristine.reset();
+  resetFormValidation();
 };
 
 const openSellModal = () => {
-  showElement(modalSell);
   body.classList.add('scroll-lock');
+  showElement(modalSell);
   document.addEventListener('keydown',onDocumentKeydownForSell);
   modalSellOverlay.addEventListener('click',closeSellModal);
   modalSellCloseBtn.addEventListener('click',closeSellModal);
@@ -66,8 +84,9 @@ const openSellModal = () => {
 
 const onModalSellSelectChange = (evt) => {
 
-  hideElement(modalValidationSellMessageError);
-  hideElement(modalValidationSellMessageSuccess);
+  // hideElement(modalValidationSellMessageError);
+  // hideElement(modalValidationSellMessageSuccess);
+  hideSuccessErrorMessages();
 
   if(evt.target.value !== 'Cash in person') {
     const isNecessaryObj = currentPayMethodsSellModal.find((payObj) => payObj.provider === evt.target.value);
@@ -81,8 +100,6 @@ const onModalSellSelectChange = (evt) => {
 const fillSelectOptionsSellModal = (arrOfOptions,arrOfMethods) => {
   currentPayMethodsSellModal.push(...arrOfMethods);
 
-  // console.log(currentPayMethodsSellModal)
-  // console.log(arrOfMethods)
   arrOfOptions.forEach((option) => {
     const isNecessary = arrOfMethods.some((element) => option.value === element.provider);
     if(!isNecessary && option.value !== 'Выберите платёжную систему') {
@@ -94,12 +111,39 @@ const fillSelectOptionsSellModal = (arrOfOptions,arrOfMethods) => {
 const fillBuyModal = (evt) => {
   const currentRow = evt.target.closest('.users-list__table-row');
   const currentDatum = arrOfBuyers.find(({id}) => id === currentRow.dataset.rowId);
+  const user = currentUser[0];
+
   getCurrentDatum(currentDatum,currentDatumOfBuyer);
   const {wallet,id:currentId,exchangeRate} = currentDatum;
-  // console.log(currentDatum)
-  // console.log(wallet)
-  // console.log(currentUser[0])
-  // console.log(currentRow)
+  hideElement(modalSellIcon);
+  modalSellName.textContent = currentDatum.userName;
+  modalSellExchangeRate.textContent = `${currentDatum.exchangeRate} ₽`;
+  modalSellLimit.textContent = `${currentDatum.minAmount} ₽ - ${Math.round(currentDatum.exchangeRate * currentDatum.balance.amount)} ₽`;
+  if(currentDatum.isVerified) {
+    showElement(modalSellIcon);
+  }
+
+  fillSelectOptionsSellModal(selectOptionModalSellArr,user.paymentMethods);
+  modalSellCryptoWallet.value = wallet.address;
+  sellIdHiddenInput.value = currentId;
+  sellExchangeRateHiddenInput.value = exchangeRate;
+  sellSendingCurrencyHiddenInput.value = Currency.KEKS;
+  sellReceivingCurrencyHiddenInput.value = Currency.RUBLE;
+};
+sellPaymentInput.addEventListener('input',onSellPaymentChange);
+sellReceivingInput.addEventListener('input',onSellReceivingChange);
+
+modalSellSelect.addEventListener('change',onModalSellSelectChange);
+export {currentDatumOfBuyer,openSellModal,fillBuyModal};
+/**в модал бай валидейшен */
+
+/**
+const fillBuyModal = (evt) => {
+  const currentRow = evt.target.closest('.users-list__table-row');
+  const currentDatum = arrOfBuyers.find(({id}) => id === currentRow.dataset.rowId);
+
+  getCurrentDatum(currentDatum,currentDatumOfBuyer);
+  const {wallet,id:currentId,exchangeRate} = currentDatum;
   hideElement(modalSellIcon);
   modalSellName.textContent = currentDatum.userName;
   modalSellExchangeRate.textContent = `${currentDatum.exchangeRate} ₽`;
@@ -116,10 +160,4 @@ const fillBuyModal = (evt) => {
   sellExchangeRateHiddenInput.value = exchangeRate;
   sellSendingCurrencyHiddenInput.value = Currency.KEKS;
   sellReceivingCurrencyHiddenInput.value = Currency.RUBLE;
-};
-sellPaymentInput.addEventListener('input',onSellPaymentChange);
-sellReceivingInput.addEventListener('input',onSellReceivingChange);
-
-modalSellSelect.addEventListener('change',onModalSellSelectChange);
-export {currentDatumOfBuyer,openSellModal,fillBuyModal}
-/**в модал бай валидейшен */
+}; */
