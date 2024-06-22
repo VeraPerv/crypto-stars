@@ -65,13 +65,8 @@ const verifiedIcons = L.icon({
 });
 
 export const createBaloon = (datum) => {
-  //console.log(datum);
-
   const {isVerified,userName,balance,exchangeRate,minAmount,paymentMethods} = datum;
-
-
   const cardElement = baloonTemplate.cloneNode(true);
-  const baloonButton = cardElement.querySelector('.user-card__change-btn');
   const baloonMark = cardElement.querySelector('.user-card__mark');
   const baloonName = cardElement.querySelector('.user-card__name');
   const baloonCurrency = cardElement.querySelector('#user-currency');
@@ -143,7 +138,6 @@ mapButton.addEventListener('click',() => {
 listButton.addEventListener('click',() => {
   sellButton.removeAttribute('disabled');
   hideElement(mapContainer);
-  //buyButton.classList.remove('is-active');
   showElement(listOfContractors);
   changeActiveClass(mapButton,listButton);
   map.closePopup();

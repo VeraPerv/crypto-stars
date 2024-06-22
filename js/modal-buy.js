@@ -72,7 +72,6 @@ const onModalSellSelectChange = (evt) => {
   }
 };
 
-
 const fillSelectOptionsSellModal = (arrOfOptions,arrOfMethods) => {
   currentPayMethodsSellModal.push(...arrOfMethods);
 

@@ -6,8 +6,7 @@ const currentUser = [];
 
 const getCurrentUser = (user) => {
   currentUser.length = 0;
-  currentUser.push(user)
-  console.log(user)
+  currentUser.push(user);
 };
 
 const fillUserDatum = (user) => {

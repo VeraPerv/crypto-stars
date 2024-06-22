@@ -1,4 +1,3 @@
-// import{currentDatumOfSeller} from './modal.js'; ранее из модал js
 import{currentDatumOfSeller} from './modal-sell.js';
 import{currentUser} from './user-profile.js';
 import{PASSWORD,ErrorText,errorMessage} from './constance.js';
@@ -12,15 +11,14 @@ const buyPasswordInput = modalBuyForm.querySelector('#buy-password');
 const modalBuyExchangeRate = modalBuyForm.querySelector('#transaction-buy-exchange');
 
 const modalBuySelect = modalBuyForm.querySelector('#modal-buy-select');
-export const modalValidationMessageError = modalBuyForm.querySelector('.modal__validation-message--error');
+const modalValidationMessageError = modalBuyForm.querySelector('.modal__validation-message--error');
 
-export const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal__validation-message--success');
+const modalValidationMessageSuccess = modalBuyForm.querySelector('.modal__validation-message--success');
 
 const seller = {
   currentSeller:[]
 };
 
-/**Вся форма */
 const pristine = new Pristine(modalBuyForm, {
   classTo: 'custom-input',
   errorClass: 'custom-input__error',
@@ -28,14 +26,10 @@ const pristine = new Pristine(modalBuyForm, {
 });
 
 buyPasswordInput.addEventListener('input',() => {
-  // hideElement(modalValidationMessageError);
-  // hideElement(modalValidationMessageSuccess);
   hideSuccessErrorMessages();
 });
 
 hideSuccessErrorMessages();
-// hideElement(modalValidationMessageError);
-// hideElement(modalValidationMessageSuccess);
 
 const validateSelectPayment = () => {
   if(modalBuySelect.value === 'Выберите платёжную систему') {
@@ -50,7 +44,6 @@ const getErrorSellSelectPaymentMessage = () => {
   }
 };
 
-/**функция валидации */
 const validatePayment = () => {
   seller.currentSeller = currentDatumOfSeller[0];
   const {balance,exchangeRate,minAmount} = seller.currentSeller;
@@ -70,85 +63,40 @@ const getErrorPaymentMessage = () => {
     return `Максимальная сумма ${(maxAmount).toFixed(2)} ₽`;
   }
 };
-/**
-const getErrorPaymentMessage = () => {
-  const currentSeller = currentDatumOfSeller[0];
-  const {balance,exchangeRate,minAmount} = currentSeller;
-  const maxAmount = currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate;
-  if (buyPaymentInput.value < currentDatumOfSeller[0].minAmount) {
-    return `Минимальная сумма ${currentDatumOfSeller[0].minAmount} ₽`;
-  }
-  if (buyPaymentInput.value > currentDatumOfSeller[0].balance.amount * currentDatumOfSeller[0].exchangeRate) {
-    return `Максимальная сумма ${(maxAmount).toFixed(2)} ₽`;
-  }
-}; */
 
 const validateReceiving = () => {
-  //const currentSeller = currentDatumOfSeller[0];
   const {balance} = seller.currentSeller;
   const isMin = buyReceivingInput .value >= 1;
   const isMax = buyReceivingInput .value <= balance.amount;
 
   return (isMin && isMax);
 };
-/**const validateReceiving = () => {
-  const currentSeller = currentDatumOfSeller[0];
-  const {balance} = currentSeller;
-  const isMin = buyReceivingInput .value >= 1;
-  const isMax = buyReceivingInput .value <= currentDatumOfSeller[0].balance.amount;
-
-  return (isMin && isMax);
-}; */
 
 const getErrorReceivingMessage = () => {
-  //const currentSeller = currentDatumOfSeller[0];
   const {balance:sellerBalance} = seller.currentSeller;
   const currentUserDatum = currentUser[0];
   const {balances} = currentUserDatum;
   const keksBalance = balances.find((balance) => balance.currency === 'KEKS');
-
   if ( buyReceivingInput.value < 1) {
     return errorMessage.KEKS;
   }
   if ( buyReceivingInput.value > keksBalance.amount) {
-
     return `Максимальная сумма ${sellerBalance.amount} КЕКС`;
   }
 };
 
-/**
-const getErrorReceivingMessage = () => {
-  const currentUserDatum = currentUser[0];
-  const {}
-  console.log(currentUser[0].balances[1].amount)
-  //pristine.reset();
-  if ( buyReceivingInput.value < 1) {
-    return errorMessage.KEKS;
-  }
-  if ( buyReceivingInput.value > currentUser[0].balances[1].amount) {
-
-    return `Максимальная сумма ${currentDatumOfSeller[0].balance.amount} КЕКС`;
-  }
-};
- */
-
-/**Добавляем валидатор на конкретное поле */
 pristine.addValidator(modalBuySelect,validateSelectPayment,getErrorSellSelectPaymentMessage);
 pristine.addValidator(buyReceivingInput,validateReceiving,getErrorReceivingMessage);
 pristine.addValidator(buyPaymentInput,validatePayment, getErrorPaymentMessage);
 
-export const onBuyPaymentChange = () => {
+const onBuyPaymentChange = () => {
   buyReceivingInput.value = buyPaymentInput.value / parseFloat(modalBuyExchangeRate.textContent);
-  // hideElement(modalValidationMessageSuccess);
-  // hideElement(modalValidationMessageError);
   hideSuccessErrorMessages();
   pristine.validate();
 };
 
-export const onReceivingChange = () => {
+const onReceivingChange = () => {
   buyPaymentInput.value = buyReceivingInput.value * parseFloat(modalBuyExchangeRate.textContent);
-  // hideElement(modalValidationMessageSuccess);
-  // hideElement(modalValidationMessageError);
   hideSuccessErrorMessages();
   pristine.validate();
 };
@@ -163,36 +111,29 @@ const validateBuyPassword = () => buyPasswordInput.value === PASSWORD;
 
 pristine.addValidator(buyPasswordInput,validateBuyPassword,getErrorBuyPassword);
 
-/**Слушаем всю форму */
 modalBuyForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  // hideElement(modalValidationMessageSuccess);
-  // hideElement(modalValidationMessageError);
-  hideSuccessErrorMessages()
+  hideSuccessErrorMessages();
   const isValid = pristine.validate();
   if (isValid) {
     hideElement(modalValidationMessageError);
-    console.log('Можно отправлять');
-    //blockSubmitBtn();
     const formData = new FormData(evt.target);
     sendData(formData)
       .then(() => {
         showElement(modalValidationMessageSuccess);
         pristine.reset();
         modalBuyForm.reset();
-        console.log('бай форм в then отправка')
-    })
-    .catch(() => {
-      throw new Error(ErrorText.SEND_DATA);
-    })
-    .finally(() => {
+      })
+      .catch(() => {
+        throw new Error(ErrorText.SEND_DATA);
+      })
+      .finally(() => {
       //разблокируем кнопку
-    })
+      });
   } else {
     showElement(modalValidationMessageError);
     hideElement(modalValidationMessageSuccess);
-    console.log('Форма невалидна');
   }
 });
 
-export {pristine};
+export {pristine,modalValidationMessageSuccess,onReceivingChange,onBuyPaymentChange,modalValidationMessageError};

@@ -7,8 +7,7 @@ import {
   changeActiveClass,
   checkIsVerified
 } from './utils.js';
-import {map} from './map.js';
-import {createMarkers} from './map.js';
+import {map,createMarkers} from './map.js';
 
 const contractorsTable = document.querySelector('.users-list__table-body');
 const tableRowTemplate = document.querySelector('#user-table-row__template').content.querySelector('.users-list__table-row');
@@ -18,12 +17,10 @@ const sellButton = document.querySelector('#btn-sell');
 const buyButton = document.querySelector('#btn-buy');
 
 
-export const arrOfSellers = [];
-export const arrOfBuyers = [];
+const arrOfSellers = [];
+const arrOfBuyers = [];
 
-// checkedContractorsButton.addEventListener('click',oncheckedContractorsButton);
 const getArrayOfContractors = (arrOfAllContractors) => {
-  //console.log(arrOfAllContractors)
   arrOfAllContractors.forEach((contractor) => {
     if (contractor.status === TypeOfContractors.SELLER) {
       arrOfSellers.push(contractor);
@@ -55,7 +52,6 @@ const fillContractorData = (element, contractor) => {
   contractorsExchangeRate.textContent = exchangeRate;
 };
 
-
 export const renderSellers = () => {
   const fragment = document.createDocumentFragment();
   arrOfSellers.forEach((contractor) => {
@@ -71,7 +67,6 @@ export const renderSellers = () => {
     row.dataset.rowId = id;
 
     const contractorsCashLimit = row.querySelector('#cash-limit');
-    /**ul где все названия банков в лишках */
     const paySystemsContainer = row.querySelector('#pay-system');
     fillContractorData(row, contractor);
     contractorsCashLimit.textContent = `${minAmount} ₽ - ${Math.round(exchangeRate * balance.amount)} ₽`;
@@ -89,7 +84,6 @@ export const renderSellers = () => {
 };
 
 const renderBuyers = () => {
-  //ПОКАЗ ЛИСТА БАЙЕРОВ
   arrOfBuyers.forEach((buyer) => {
     const {
       minAmount,
@@ -109,12 +103,10 @@ const renderBuyers = () => {
     if (checkedContractorsButton.checked) {
       checkIsVerified(row, buyer);
     }
-
   });
 };
 
 const oncheckedContractorsButton = () => {
-
   map.closePopup();
   clearElementsContainer(contractorsTable);
   if (sellButton.classList.contains('is-active')) {
@@ -125,23 +117,17 @@ const oncheckedContractorsButton = () => {
 };
 
 checkedContractorsButton.addEventListener('change', oncheckedContractorsButton);
-
-// console.log(arrOfSellers)
-// console.log(arrOfBuyers)
-
 sellButton.addEventListener('click', () => {
-
   clearElementsContainer(contractorsTable);
   renderBuyers();
   changeActiveClass(sellButton, buyButton);
 });
 
 buyButton.addEventListener('click', () => {
-
   clearElementsContainer(contractorsTable);
   renderSellers();
   changeActiveClass(sellButton, buyButton);
 });
 
 
-export {getArrayOfContractors};
+export {getArrayOfContractors,arrOfSellers,arrOfBuyers};
