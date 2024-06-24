@@ -7,7 +7,7 @@ const sellButton = document.querySelector('#btn-sell');
 const buyButton = document.querySelector('#btn-buy');
 
 const renderModal = (evt) => {
-  body.classList.add('scroll-lock');/**добавила */
+  body.classList.add('scroll-lock');
   if (buyButton.classList.contains('is-active')) {
     openBuyModal();
     fillSellModal(evt);

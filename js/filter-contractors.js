@@ -16,7 +16,6 @@ const checkedContractorsButton = document.querySelector('#checked-users');
 const sellButton = document.querySelector('#btn-sell');
 const buyButton = document.querySelector('#btn-buy');
 
-
 const arrOfSellers = [];
 const arrOfBuyers = [];
 

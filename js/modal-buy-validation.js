@@ -126,9 +126,6 @@ modalBuyForm.addEventListener('submit', (evt) => {
       })
       .catch(() => {
         throw new Error(ErrorText.SEND_DATA);
-      })
-      .finally(() => {
-      //разблокируем кнопку
       });
   } else {
     showElement(modalValidationMessageError);

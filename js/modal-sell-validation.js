@@ -130,9 +130,6 @@ modalSellForm.addEventListener('submit', (evt) => {
       .catch(() => {
         hideElement(userProfileContainer);
         throw new Error(ErrorText.SEND_DATA);
-      })
-      .finally(() => {
-      //разблокируем кнопку
       });
   } else {
     showElement(modalValidationMessageError);
