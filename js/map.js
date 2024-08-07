@@ -1,4 +1,5 @@
 import {hideElement,showElement,changeActiveClass,createElement,clearElementsContainer} from './utils.js';
+import {fillBuyModal} from './modal-buy.js';
 
 const listButton = document.querySelector('#btn-list');
 const mapButton = document.querySelector('#btn-map');
@@ -64,6 +65,8 @@ const verifiedIcons = L.icon({
   iconAnchor: [iconConfig.anchorX, iconConfig.anchorY],
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 export const createBaloon = (datum) => {
   const {isVerified,userName,balance,exchangeRate,minAmount,paymentMethods} = datum;
   const cardElement = baloonTemplate.cloneNode(true);
@@ -73,6 +76,8 @@ export const createBaloon = (datum) => {
   const baloonExchange = cardElement.querySelector('#user-exchange');
   const baloonCashLimit = cardElement.querySelector('#user__cash-limit');
   const baloonPayContainer = cardElement.querySelector('.user-card__badges-list');
+  const mapChangeBtn = cardElement.querySelector('.user-card__change-btn');
+  console.log(cardElement);
 
   if(!isVerified) {
     baloonMark.style = 'display: none';
@@ -84,10 +89,14 @@ export const createBaloon = (datum) => {
   baloonCashLimit.textContent = `${minAmount} ₽ - ${Math.round(exchangeRate * balance.amount)} ₽`;
   clearElementsContainer(baloonPayContainer);
   createElement(baloonPayContainer,paymentMethods,'li','users-list__badges-item','badge');
+
+  const onMapChangeBtn = (evt) => {
+    console.log(datum);
+   // fillBuyModal(evt)
+  }
+  mapChangeBtn.addEventListener('click',onMapChangeBtn);
   return cardElement;
 };
-
-const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = (datum) => {
   const {lat,lng} = datum.coords;
@@ -107,6 +116,9 @@ const createMarker = (datum) => {
   });
   marker.addTo(markerGroup)
     .bindPopup(createBaloon(datum));
+  if(markerGroup.isPopupOpen()) {
+    console.log('dfdf')
+  }
 };
 
 const createMarkers = (arrOfAllSellers) => {
@@ -142,5 +154,9 @@ listButton.addEventListener('click',() => {
   changeActiveClass(mapButton,listButton);
   map.closePopup();
 });
+
+
+
+
 
 export {createMarkers,map};

@@ -3,6 +3,7 @@ import {getArrayOfContractors,renderSellers} from './filter-contractors.js';
 import {fillUserDatum,userProfileContainer} from './user-profile.js';
 import { onModalTableClick } from './modal.js';
 import { hideElement,showElement } from './utils.js';
+import './modal-buy-map.js';
 
 const mainContainer = document.querySelector('#container-list');
 const messageError = document.querySelector('#container-error');
@@ -27,5 +28,6 @@ getDataOfUser()
   .catch(() => {
     hideElement(userProfileContainer);
   });
+
 
 modalTable.addEventListener('click',onModalTableClick);
